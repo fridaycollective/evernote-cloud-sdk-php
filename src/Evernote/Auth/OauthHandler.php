@@ -44,42 +44,36 @@ class OauthHandler
 
         $this->consumer_secret = $consumer_secret;
 
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+        unset($this->params['oauth_token']);
+        unset($this->params['oauth_verifier']);
+
+        $temporaryCredentials = $this->getTemporaryCredentials();
+
+        $authorizationUrl = $this->getBaseUrl('OAuth.action?oauth_token=')
+            . $temporaryCredentials['oauth_token'];
+
+        if ($this->supportLinkedSandbox) {
+            $authorizationUrl .= '&supportLinkedSandbox=true';
         }
 
-        // first call
-        if (!array_key_exists('oauth_verifier', $_GET) && !array_key_exists('oauth_token', $_GET)) {
-            unset($this->params['oauth_token']);
-            unset($this->params['oauth_verifier']);
+        return [
+            'authorization_url' => $authorizationUrl,
+            'oauth_token_secret' => $temporaryCredentials['oauth_token_secret']
+        ];
+    }
 
-            $temporaryCredentials = $this->getTemporaryCredentials();
+    public function authorizeAfterCallback($consumer_key, $consumer_secret, $oauth_token, $oauth_token_secret, $oauth_verifier)
+    {
+        $this->params['oauth_consumer_key']     = $consumer_key;
+        $this->consumer_secret = $consumer_secret;
+        $this->token_secret = $oauth_token_secret;
 
-            $_SESSION['oauth_token_secret'] = $temporaryCredentials['oauth_token_secret'];;
+        $this->params['oauth_token']    = $oauth_token;
+        $this->params['oauth_verifier'] = $oauth_verifier;
 
-            $authorizationUrl = $this->getBaseUrl('OAuth.action?oauth_token=')
-                . $temporaryCredentials['oauth_token'];
+        unset($this->params['oauth_callback']);
 
-            if ($this->supportLinkedSandbox) {
-                $authorizationUrl .= '&supportLinkedSandbox=true';
-            }
-
-            return $authorizationUrl;
-
-        // the user declined the authorization
-        } elseif (!array_key_exists('oauth_verifier', $_GET) && array_key_exists('oauth_token', $_GET)) {
-            throw new AuthorizationDeniedException('Authorization declined.');
-        //the user authorized the app
-        } else {
-            $this->token_secret = $_SESSION['oauth_token_secret'];
-
-            $this->params['oauth_token']    = $_GET['oauth_token'];
-            $this->params['oauth_verifier'] = $_GET['oauth_verifier'];
-            unset($this->params['oauth_callback']);
-
-            return $this->getTemporaryCredentials();
-        }
-
+        return $this->getTemporaryCredentials();
     }
 
     protected function getBaseUrl($prefix = '')
