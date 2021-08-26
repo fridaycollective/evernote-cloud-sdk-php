@@ -25,7 +25,7 @@
                 <img>
                     <xsl:attribute name="class">attach_img</xsl:attribute>
                     <xsl:attribute name="src">
-                        <xsl:value-of select="concat('/images/', @hash, '.png')"/>
+                        <xsl:value-of select="concat($API_URL,'/api/notes/evernote-resources/', @hash)"/>
                     </xsl:attribute>
                 </img>
             </xsl:when>
@@ -33,13 +33,12 @@
                 <img>
                     <xsl:attribute name="class">attach_img</xsl:attribute>
                     <xsl:attribute name="src">
-                        <xsl:value-of select="concat('/images/', @hash, '.jpg')"/>
+                        <xsl:value-of select="concat($API_URL,'/api/notes/evernote-resources/', @hash)"/>
                     </xsl:attribute>
                 </img>
             </xsl:when>
             <xsl:otherwise>
-                Unknown media:
-                <xsl:value-of select="@type"/>
+                <evernote-resource-vue-component hash="{@hash}" type="{@type}" />
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
