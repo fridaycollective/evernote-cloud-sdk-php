@@ -25,6 +25,14 @@
     </xsl:template>
 
 
+    <!-- Container of en-media and others -->
+    <xsl:template match="xhtml:vue-component">
+        <xsl:element name="en-media">
+            <xsl:copy-of select="@*" />
+        </xsl:element>
+    </xsl:template>
+
+
     <xsl:template
             match="xhtml:a|xhtml:abbr|xhtml:acronym|xhtml:address|xhtml:area|xhtml:b|xhtml:bdo|xhtml:big|xhtml:blockquote|xhtml:br|xhtml:caption|xhtml:center|xhtml:cite|xhtml:code|xhtml:col|xhtml:colgroup|xhtml:dd|xhtml:del|xhtml:dfn|xhtml:dl|xhtml:dt|xhtml:em|xhtml:en-crypt|xhtml:en-media|xhtml:en-todo|xhtml:font|xhtml:h1|xhtml:h2|xhtml:h3|xhtml:h4|xhtml:h5|xhtml:h6|xhtml:hr|xhtml:i|xhtml:img|xhtml:ins|xhtml:kbd|xhtml:li|xhtml:map|xhtml:ol|xhtml:p|xhtml:pre|xhtml:q|xhtml:s|xhtml:samp|xhtml:small|xhtml:span|xhtml:strike|xhtml:strong|xhtml:sub|xhtml:sup|xhtml:table|xhtml:tbody|xhtml:td|xhtml:tfoot|xhtml:th|xhtml:thead|xhtml:tr|xhtml:tt|xhtml:u|xhtml:ul|xhtml:var">
         <xsl:element name="{name()}">
@@ -39,6 +47,10 @@
             <xsl:copy-of select="@type" />
         </en-media>
     </xsl:template>
+
+
+
+
     <!-- Strip unknown text -->
     <xsl:template match="*">
         <xsl:apply-templates />
