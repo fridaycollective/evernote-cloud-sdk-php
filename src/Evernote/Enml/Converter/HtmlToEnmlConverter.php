@@ -54,8 +54,6 @@ $enml_body
 </en-note>
 EOF;
 
-        $enml = $enml_body;
-
         return $enml;
     }
 
