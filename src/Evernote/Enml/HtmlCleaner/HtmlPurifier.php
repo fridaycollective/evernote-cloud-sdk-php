@@ -13,6 +13,13 @@ class HtmlPurifier implements HtmlCleanerInterface
         $this->htmlPurifier = new \HTMLPurifier();
         if (null === $config) {
             $config = \HTMLPurifier_Config::createDefault();
+            $config->set('HTML.DefinitionID', 'crankcrm evernote');
+            $config->set('HTML.DefinitionRev', 2);
+            if ($def = $config->maybeGetRawHTMLDefinition()) {
+                $def->addElement('vue-component', 'Block', 'Flow', 'Common');
+                $def->addAttribute('vue-component', 'hash', 'CDATA');
+                $def->addAttribute('vue-component', 'type', 'CDATA');
+            }
         }
         $this->config = $config;
     }
