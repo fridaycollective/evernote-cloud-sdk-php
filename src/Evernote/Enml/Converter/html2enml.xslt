@@ -26,7 +26,7 @@
 
 
     <!-- Container of en-media and others -->
-    <xsl:template match="xhtml:vue-component">
+    <xsl:template match="xhtml:evernote-resource-vue-component">
         <xsl:element name="en-media">
             <xsl:copy-of select="@*" />
         </xsl:element>
