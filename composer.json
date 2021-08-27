@@ -7,7 +7,7 @@
         "sdk"
     ],
     "homepage": "https://github.com/fridaycollecctive/evernote-cloud-sdk-php",
-    "version": "3.5",
+    "version": "3.6",
     "license": "Apache-2.0",
     "authors": [
         {
